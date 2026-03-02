@@ -27,7 +27,7 @@ const dailyEl = document.getElementById('daily-hallucination');
 // ============================================================
 
 const BOOT_MESSAGES = [
-    "Initializing Copylot hallucination engine...",
+    "Initializing Pylot hallucination engine...",
     "Loading deprecated APIs from Doors 95...",
     "Connecting to Bong (attempt 3 of 12)...",
     "Calibrating confidence to 'unjustified'...",
@@ -103,7 +103,7 @@ function generateDaily() {
     const rng = mulberry32(seed);
     const assertion = pick(slopData.assertions, rng);
     const corporate = pick(slopData.corporate, rng);
-    dailyEl.innerHTML = `<strong>Copylot Hallucination of the Day:</strong> It ${assertion}. ${corporate}`;
+    dailyEl.innerHTML = `<strong>Pylot Hallucination of the Day:</strong> It ${assertion}. ${corporate}`;
 }
 
 // ============================================================
@@ -209,9 +209,9 @@ function appendInterrupt(text) {
     scrollToBottom();
 }
 
-function appendCopylot(html, suggestions) {
+function appendPylot(html, suggestions) {
     const div = document.createElement('div');
-    div.className = 'msg msg-copylot-row';
+    div.className = 'msg msg-pylot-row';
 
     let suggestionsHtml = '';
     if (suggestions && suggestions.length) {
@@ -224,7 +224,7 @@ function appendCopylot(html, suggestions) {
     }
 
     div.innerHTML = `
-        <div class="avatar avatar-copylot">
+        <div class="avatar avatar-pylot">
             <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
                 <rect x="1" y="1" width="11" height="11" rx="2" fill="#e8453c" transform="rotate(-2 6.5 6.5)"/>
                 <rect x="15" y="0.5" width="11" height="11" rx="2" fill="#8db832" transform="rotate(3 20.5 6)"/>
@@ -232,8 +232,8 @@ function appendCopylot(html, suggestions) {
                 <rect x="15.5" y="15" width="11" height="11" rx="2" fill="#e6a218" transform="rotate(-3 21 20.5)"/>
             </svg>
         </div>
-        <div class="copylot-bubble">
-            <div class="copylot-text">${html}</div>
+        <div class="pylot-bubble">
+            <div class="pylot-text">${html}</div>
             ${suggestionsHtml}
         </div>
     `;
@@ -253,11 +253,11 @@ function appendCopylot(html, suggestions) {
 
 function showTyping() {
     const div = document.createElement('div');
-    div.className = 'msg msg-copylot-row';
+    div.className = 'msg msg-pylot-row';
     div.id = 'typing-indicator';
     const state = pick(TYPING_STATES);
     div.innerHTML = `
-        <div class="avatar avatar-copylot">
+        <div class="avatar avatar-pylot">
             <svg width="18" height="18" viewBox="0 0 23 23" fill="none">
                 <rect width="11" height="11" fill="#f25022" rx="1"/>
                 <rect x="12" width="11" height="11" fill="#7fba00" rx="1"/>
@@ -267,7 +267,7 @@ function showTyping() {
         </div>
         <div class="typing-bubble">
             <span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>
-            <span class="typing-label">Copylot is ${state}...</span>
+            <span class="typing-label">Pylot is ${state}...</span>
         </div>
     `;
     chatBox.appendChild(div);
@@ -286,7 +286,7 @@ function scrollToBottom() {
 function enableInput() {
     userInput.disabled = false;
     submitButton.disabled = false;
-    userInput.placeholder = "Ask Microslop Copylot anything...";
+    userInput.placeholder = "Ask Microslop Pylot anything...";
     userInput.focus();
 }
 
@@ -322,7 +322,7 @@ function handleSubmit(overrideText) {
             appendInterrupt(response.interrupt);
         }
 
-        appendCopylot(response.html, response.suggestions);
+        appendPylot(response.html, response.suggestions);
         enableInput();
     }, thinkTime);
 }
