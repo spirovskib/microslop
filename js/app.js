@@ -224,13 +224,7 @@ function appendParrot(html, suggestions) {
     }
 
     div.innerHTML = `
-        <div class="avatar avatar-parrot">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="6" y="0" width="11" height="11" rx="2" fill="#e8453c"/>
-                <rect x="0" y="13" width="11" height="11" rx="2" fill="#3a9ae0"/>
-                <rect x="13" y="13" width="11" height="11" rx="2" fill="#8db832"/>
-            </svg>
-        </div>
+        <div class="avatar avatar-parrot">🦜</div>
         <div class="parrot-bubble">
             <div class="parrot-text">${html}</div>
             ${suggestionsHtml}
@@ -256,13 +250,7 @@ function showTyping() {
     div.id = 'typing-indicator';
     const state = pick(TYPING_STATES);
     div.innerHTML = `
-        <div class="avatar avatar-parrot">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="6" y="0" width="11" height="11" rx="2" fill="#e8453c"/>
-                <rect x="0" y="13" width="11" height="11" rx="2" fill="#3a9ae0"/>
-                <rect x="13" y="13" width="11" height="11" rx="2" fill="#8db832"/>
-            </svg>
-        </div>
+        <div class="avatar avatar-pylot">🦜</div>
         <div class="typing-bubble">
             <span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>
             <span class="typing-label">Parrot is ${state}...</span>
