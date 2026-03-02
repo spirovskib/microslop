@@ -272,7 +272,7 @@ function scrollToBottom() {
 function enableInput() {
     userInput.disabled = false;
     submitButton.disabled = false;
-    userInput.placeholder = "Ask Slop Parrot anything...";
+    userInput.placeholder = "Ask Slopit Parrot anything...";
     userInput.focus();
 }
 
