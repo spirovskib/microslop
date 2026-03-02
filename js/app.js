@@ -28,7 +28,7 @@ const dailyEl = document.getElementById('daily-hallucination');
 
 const BOOT_MESSAGES = [
     "Initializing Pylot hallucination engine...",
-    "Loading deprecated APIs from Doors 95...",
+    "Loading deprecated APIs from Doors 4.20...",
     "Connecting to Bong (attempt 3 of 12)...",
     "Calibrating confidence to 'unjustified'...",
     "Indexing your private repos without consent...",
