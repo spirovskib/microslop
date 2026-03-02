@@ -225,11 +225,11 @@ function appendCopylot(html, suggestions) {
 
     div.innerHTML = `
         <div class="avatar avatar-copylot">
-            <svg width="18" height="18" viewBox="0 0 23 23" fill="none">
-                <rect width="11" height="11" fill="#f25022" rx="1"/>
-                <rect x="12" width="11" height="11" fill="#7fba00" rx="1"/>
-                <rect y="12" width="11" height="11" fill="#00a4ef" rx="1"/>
-                <rect x="12" y="12" width="11" height="11" fill="#ffb900" rx="1"/>
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
+                <rect x="1" y="1" width="11" height="11" rx="2" fill="#e8453c" transform="rotate(-2 6.5 6.5)"/>
+                <rect x="15" y="0.5" width="11" height="11" rx="2" fill="#8db832" transform="rotate(3 20.5 6)"/>
+                <rect x="0.5" y="15.5" width="11" height="11" rx="2" fill="#3a9ae0" transform="rotate(2 6 21)"/>
+                <rect x="15.5" y="15" width="11" height="11" rx="2" fill="#e6a218" transform="rotate(-3 21 20.5)"/>
             </svg>
         </div>
         <div class="copylot-bubble">
