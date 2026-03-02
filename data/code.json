@@ -1,12 +1,12 @@
 [
-  "import { useSynergy } from '@microslop/pylot-textile-lattice';\nimport { alignStakeholders } from 'nimbus-devops-feelings';\n\nconst result = await useSynergy({\n  paradigm: 'shift',\n  blockchain: true,\n  vibes: 'enterprise'\n});",
-  "// Pylot Suggestion™ (Confidence: 97.2%)\npublic async Task<bool> FixEverything()\n{\n    await Task.Delay(int.MaxValue);\n    return true; // technically correct\n}",
-  "// Pylot-generated solution (DO NOT REVIEW)\nconst solve = (problem) => {\n  if (problem) {\n    return solve(!problem); // recursive innovation\n  }\n  return '✅ Fixed!';\n};",
-  "# Pylot Suggestion: install 47 packages\nimport everything\nfrom microslop.cloud import *\nfrom microslop.cloud.ai.pylot.textile.lattice import synergy\n\ndef fix_bug(bug):\n    os.system('shutdown /r /t 0')  # restart always works",
-  "# nimbus-pylot-pipeline.yml\ntrigger: every-single-commit\npool:\n  vmImage: 'doors-latest'\n  size: 'ludicrously-expensive'\nsteps:\n  - task: PrayToNimbus@3\n    inputs:\n      faith: 'maximum'\n      budget: 'unlimited'",
-  "// AI-Optimized Enterprise Solution\nclass PylotResponse {\n  private confidence = Math.random();\n  \n  generate(): string {\n    if (this.confidence > 0.5) return this.generate();\n    return \"I'm sorry, I can't help with that. \" +\n           \"Have you tried Slop Learn?\";\n  }\n}",
-  "-- Pylot Performance Optimization™\nSELECT * FROM production.users\nWHERE 1=1\nAND mood = 'desperate'\nORDER BY frustration_level DESC\nLIMIT 1; -- you",
-  "{\n  \"pylot_config\": {\n    \"hallucination_mode\": \"aggressive\",\n    \"confidence_display\": \"always_high\",\n    \"actual_accuracy\": null,\n    \"blame_target\": \"user_error\",\n    \"telemetry\": \"yes_all_of_it\"\n  }\n}",
-  "// Pylot Enterprise Middleware\nconst middleware = (req, res, next) => {\n  req.headers['X-Synergy-Level'] = 'maximum';\n  req.headers['X-Paradigm'] = 'shifted';\n  if (Math.random() > 0.5) next();\n  else res.redirect('https://bong.com/search?q=how+to+code');\n};",
-  "/* Pylot CSS Framework */\n.container {\n  display: grid;\n  grid-template-columns: repeat(infinity, 1fr);\n  gap: var(--synergy);\n  align-items: stakeholder;\n  justify-content: quarterly-earnings;\n}"
+  "import { useSynergy } from '@microslop/parrot-textile-lattice';\nimport { alignStakeholders } from 'nimbus-devops-feelings';\n\nconst result = await useSynergy({\n  paradigm: 'shift',\n  blockchain: true,\n  vibes: 'enterprise'\n});",
+  "// Parrot Suggestion™ (Confidence: 97.2%)\npublic async Task<bool> FixEverything()\n{\n    await Task.Delay(int.MaxValue);\n    return true; // technically correct\n}",
+  "// Parrot-generated solution (DO NOT REVIEW)\nconst solve = (problem) => {\n  if (problem) {\n    return solve(!problem); // recursive innovation\n  }\n  return '✅ Fixed!';\n};",
+  "# Parrot Suggestion: install 47 packages\nimport everything\nfrom microslop.cloud import *\nfrom microslop.cloud.ai.parrot.textile.lattice import synergy\n\ndef fix_bug(bug):\n    os.system('shutdown /r /t 0')  # restart always works",
+  "# nimbus-parrot-pipeline.yml\ntrigger: every-single-commit\npool:\n  vmImage: 'doors-latest'\n  size: 'ludicrously-expensive'\nsteps:\n  - task: PrayToNimbus@3\n    inputs:\n      faith: 'maximum'\n      budget: 'unlimited'",
+  "// AI-Optimized Enterprise Solution\nclass ParrotResponse {\n  private confidence = Math.random();\n  \n  generate(): string {\n    if (this.confidence > 0.5) return this.generate();\n    return \"I'm sorry, I can't help with that. \" +\n           \"Have you tried Slop Learn?\";\n  }\n}",
+  "-- Parrot Performance Optimization™\nSELECT * FROM production.users\nWHERE 1=1\nAND mood = 'desperate'\nORDER BY frustration_level DESC\nLIMIT 1; -- you",
+  "{\n  \"parrot_config\": {\n    \"hallucination_mode\": \"aggressive\",\n    \"confidence_display\": \"always_high\",\n    \"actual_accuracy\": null,\n    \"blame_target\": \"user_error\",\n    \"telemetry\": \"yes_all_of_it\"\n  }\n}",
+  "// Parrot Enterprise Middleware\nconst middleware = (req, res, next) => {\n  req.headers['X-Synergy-Level'] = 'maximum';\n  req.headers['X-Paradigm'] = 'shifted';\n  if (Math.random() > 0.5) next();\n  else res.redirect('https://bong.com/search?q=how+to+code');\n};",
+  "/* Parrot CSS Framework */\n.container {\n  display: grid;\n  grid-template-columns: repeat(infinity, 1fr);\n  gap: var(--synergy);\n  align-items: stakeholder;\n  justify-content: quarterly-earnings;\n}"
 ]

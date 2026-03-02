@@ -27,7 +27,7 @@ const dailyEl = document.getElementById('daily-hallucination');
 // ============================================================
 
 const BOOT_MESSAGES = [
-    "Initializing Pylot hallucination engine...",
+    "Initializing Parrot hallucination engine...",
     "Loading deprecated APIs from Doors 4.20...",
     "Connecting to Bong (attempt 3 of 12)...",
     "Calibrating confidence to 'unjustified'...",
@@ -103,7 +103,7 @@ function generateDaily() {
     const rng = mulberry32(seed);
     const assertion = pick(slopData.assertions, rng);
     const corporate = pick(slopData.corporate, rng);
-    dailyEl.innerHTML = `<strong>Pylot Hallucination of the Day:</strong> It ${assertion}. ${corporate}`;
+    dailyEl.innerHTML = `<strong>Parrot Hallucination of the Day:</strong> It ${assertion}. ${corporate}`;
 }
 
 // ============================================================
@@ -209,9 +209,9 @@ function appendInterrupt(text) {
     scrollToBottom();
 }
 
-function appendPylot(html, suggestions) {
+function appendParrot(html, suggestions) {
     const div = document.createElement('div');
-    div.className = 'msg msg-pylot-row';
+    div.className = 'msg msg-parrot-row';
 
     let suggestionsHtml = '';
     if (suggestions && suggestions.length) {
@@ -224,15 +224,15 @@ function appendPylot(html, suggestions) {
     }
 
     div.innerHTML = `
-        <div class="avatar avatar-pylot">
+        <div class="avatar avatar-parrot">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <rect x="6" y="0" width="11" height="11" rx="2" fill="#e8453c"/>
                 <rect x="0" y="13" width="11" height="11" rx="2" fill="#3a9ae0"/>
                 <rect x="13" y="13" width="11" height="11" rx="2" fill="#8db832"/>
             </svg>
         </div>
-        <div class="pylot-bubble">
-            <div class="pylot-text">${html}</div>
+        <div class="parrot-bubble">
+            <div class="parrot-text">${html}</div>
             ${suggestionsHtml}
         </div>
     `;
@@ -252,11 +252,11 @@ function appendPylot(html, suggestions) {
 
 function showTyping() {
     const div = document.createElement('div');
-    div.className = 'msg msg-pylot-row';
+    div.className = 'msg msg-parrot-row';
     div.id = 'typing-indicator';
     const state = pick(TYPING_STATES);
     div.innerHTML = `
-        <div class="avatar avatar-pylot">
+        <div class="avatar avatar-parrot">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <rect x="6" y="0" width="11" height="11" rx="2" fill="#e8453c"/>
                 <rect x="0" y="13" width="11" height="11" rx="2" fill="#3a9ae0"/>
@@ -265,7 +265,7 @@ function showTyping() {
         </div>
         <div class="typing-bubble">
             <span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>
-            <span class="typing-label">Pylot is ${state}...</span>
+            <span class="typing-label">Parrot is ${state}...</span>
         </div>
     `;
     chatBox.appendChild(div);
@@ -284,7 +284,7 @@ function scrollToBottom() {
 function enableInput() {
     userInput.disabled = false;
     submitButton.disabled = false;
-    userInput.placeholder = "Ask Slop Pylot anything...";
+    userInput.placeholder = "Ask Slop Parrot anything...";
     userInput.focus();
 }
 
@@ -320,7 +320,7 @@ function handleSubmit(overrideText) {
             appendInterrupt(response.interrupt);
         }
 
-        appendPylot(response.html, response.suggestions);
+        appendParrot(response.html, response.suggestions);
         enableInput();
     }, thinkTime);
 }
