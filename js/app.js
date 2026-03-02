@@ -284,7 +284,7 @@ function scrollToBottom() {
 function enableInput() {
     userInput.disabled = false;
     submitButton.disabled = false;
-    userInput.placeholder = "Ask Microslop Pylot anything...";
+    userInput.placeholder = "Ask Slop Pylot anything...";
     userInput.focus();
 }
 
