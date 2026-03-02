@@ -225,11 +225,10 @@ function appendPylot(html, suggestions) {
 
     div.innerHTML = `
         <div class="avatar avatar-pylot">
-            <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
-                <rect x="1" y="1" width="11" height="11" rx="2" fill="#e8453c" transform="rotate(-2 6.5 6.5)"/>
-                <rect x="15" y="0.5" width="11" height="11" rx="2" fill="#8db832" transform="rotate(3 20.5 6)"/>
-                <rect x="0.5" y="15.5" width="11" height="11" rx="2" fill="#3a9ae0" transform="rotate(2 6 21)"/>
-                <rect x="15.5" y="15" width="11" height="11" rx="2" fill="#e6a218" transform="rotate(-3 21 20.5)"/>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="6" y="0" width="11" height="11" rx="2" fill="#e8453c"/>
+                <rect x="0" y="13" width="11" height="11" rx="2" fill="#3a9ae0"/>
+                <rect x="13" y="13" width="11" height="11" rx="2" fill="#8db832"/>
             </svg>
         </div>
         <div class="pylot-bubble">
