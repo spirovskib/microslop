@@ -258,11 +258,10 @@ function showTyping() {
     const state = pick(TYPING_STATES);
     div.innerHTML = `
         <div class="avatar avatar-pylot">
-            <svg width="18" height="18" viewBox="0 0 23 23" fill="none">
-                <rect width="11" height="11" fill="#f25022" rx="1"/>
-                <rect x="12" width="11" height="11" fill="#7fba00" rx="1"/>
-                <rect y="12" width="11" height="11" fill="#00a4ef" rx="1"/>
-                <rect x="12" y="12" width="11" height="11" fill="#ffb900" rx="1"/>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="6" y="0" width="11" height="11" rx="2" fill="#e8453c"/>
+                <rect x="0" y="13" width="11" height="11" rx="2" fill="#3a9ae0"/>
+                <rect x="13" y="13" width="11" height="11" rx="2" fill="#8db832"/>
             </svg>
         </div>
         <div class="typing-bubble">
