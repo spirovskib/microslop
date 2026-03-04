@@ -1,5 +1,6 @@
 // ============================================================
-// MICROSLOP COPYLOT — The Hallucination Engine
+// SLOPIT PARROT — The Hallucination Engine
+// Now with procedural long-form nonsense & dynamic code gen
 // ============================================================
 
 // State
@@ -9,7 +10,6 @@ let slopData = {
     bridges: [],
     strippers: [],
     corporate: [],
-    code: [],
     interrupts: [],
     sources: [],
     suggestions: []
@@ -51,15 +51,14 @@ const TYPING_STATES = [
 ];
 
 async function boot() {
-    // Show boot messages with staggered delay
     for (let i = 0; i < BOOT_MESSAGES.length; i++) {
         await delay(500 + Math.random() * 400);
         appendSystem(BOOT_MESSAGES[i]);
     }
 
-    // Load all data in parallel
     try {
-        const files = ['assertions', 'bridges', 'strippers', 'corporate', 'code', 'interrupts', 'sources', 'suggestions'];
+        // No longer loading code.json — code is generated dynamically now
+        const files = ['assertions', 'bridges', 'strippers', 'corporate', 'interrupts', 'sources', 'suggestions'];
         const results = await Promise.all(
             files.map(f => fetch(`./data/${f}.json`).then(r => r.json()))
         );
@@ -125,28 +124,48 @@ function extractSubject(input) {
 
 function generateResponse(input) {
     const subject = extractSubject(input);
-    const assertion = pick(slopData.assertions);
-    const bridgeTemplate = pick(slopData.bridges);
-    const bridge = bridgeTemplate.replace("{prev}", `<strong>${previousSubject}</strong>`);
+
+    // Decide response type: short (classic) vs long-form
+    const isLong = Math.random() < 0.55; // 55% chance of long-form response
 
     let parts = [];
 
-    // Core response
-    parts.push(`Regarding <strong>"${escapeHtml(subject)}"</strong>: It ${assertion}. ${bridge}`);
+    if (isLong && window.TextGen) {
+        // ── Long-form generated response ──
+        parts.push(window.TextGen.generate(subject, previousSubject));
+    } else {
+        // ── Classic short response ──
+        const assertion = pick(slopData.assertions);
+        const bridgeTemplate = pick(slopData.bridges);
+        const bridge = bridgeTemplate.replace(/\{prev\}/g, `<strong>${escapeHtml(previousSubject)}</strong>`);
+        parts.push(`Regarding <strong>"${escapeHtml(subject)}"</strong>: It ${assertion}. ${bridge}`);
 
-    // 40% chance: corporate slop
-    if (Math.random() < 0.4 && slopData.corporate.length) {
-        parts.push(pick(slopData.corporate));
+        // 40% chance: corporate slop
+        if (Math.random() < 0.4 && slopData.corporate.length) {
+            parts.push(pick(slopData.corporate));
+        }
     }
 
-    // 30% chance: fake code
-    if (Math.random() < 0.3 && slopData.code.length) {
-        parts.push('Here\'s the recommended solution:');
-        parts.push('<pre class="code-block"><code>' + escapeHtml(pick(slopData.code)) + '</code></pre>');
+    // ── Dynamic code (replaces static code.json) ──
+    // 40% chance for short responses, 50% for long-form
+    const codeChance = isLong ? 0.5 : 0.4;
+    if (Math.random() < codeChance && window.CodeGen) {
+        const { code } = window.CodeGen.generate(subject);
+        const label = pick([
+            "Here's the recommended solution:",
+            "Parrot suggests the following implementation:",
+            "The enterprise-grade approach would be:",
+            "Based on my training data, try this:",
+            "The officially unsupported workaround:",
+            "Here's what I generated with 97.3% confidence:",
+            "The Parrot-approved pattern for this:",
+        ]);
+        parts.push(label);
+        parts.push('<pre class="code-block"><code>' + escapeHtml(code) + '</code></pre>');
     }
 
-    // 25% chance: fake source
-    if (Math.random() < 0.25 && slopData.sources.length) {
+    // 30% chance: fake source
+    if (Math.random() < 0.30 && slopData.sources.length) {
         parts.push('<em class="source-cite">' + pick(slopData.sources) + '</em>');
     }
 
@@ -233,7 +252,6 @@ function appendParrot(html, suggestions) {
 
     chatBox.appendChild(div);
 
-    // Bind suggestion buttons
     div.querySelectorAll('.sug-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const query = btn.getAttribute('data-query');
@@ -250,7 +268,7 @@ function showTyping() {
     div.id = 'typing-indicator';
     const state = pick(TYPING_STATES);
     div.innerHTML = `
-        <div class="avatar avatar-pylot">🦜</div>
+        <div class="avatar avatar-parrot">🦜</div>
         <div class="typing-bubble">
             <span class="typing-dots"><span>●</span><span>●</span><span>●</span></span>
             <span class="typing-label">Parrot is ${state}...</span>
@@ -298,7 +316,8 @@ function handleSubmit(overrideText) {
     disableInput();
     showTyping();
 
-    const thinkTime = 800 + Math.random() * 1500;
+    // Longer think time for long-form responses
+    const thinkTime = 800 + Math.random() * 2000;
     setTimeout(() => {
         hideTyping();
 

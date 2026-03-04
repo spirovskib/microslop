@@ -99,15 +99,9 @@
             gap: 10px;
         }
 
-        /* Abstract "melted window" logo — a wonky, slightly broken shape */
         .logo-icon {
             font-size: 24px;
             line-height: 1;
-        }
-
-        .logo-icon svg {
-            width: 100%;
-            height: 100%;
         }
 
         .logo-text {
@@ -164,7 +158,6 @@
             background: var(--bg-page);
         }
 
-        /* Scrollbar */
         .chat-area::-webkit-scrollbar { width: 5px; }
         .chat-area::-webkit-scrollbar-track { background: transparent; }
         .chat-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
@@ -177,7 +170,6 @@
             animation: slideUp 0.3s ease-out;
         }
 
-        /* System */
         .msg-system {
             font-size: 12px;
             color: var(--text-muted);
@@ -189,7 +181,6 @@
 
         .system-dot { color: var(--accent-green); font-size: 7px; }
 
-        /* User */
         .msg-user-row {
             display: flex;
             justify-content: flex-end;
@@ -211,7 +202,6 @@
             color: #fff;
         }
 
-        /* Avatars */
         .avatar {
             width: 32px;
             height: 32px;
@@ -233,7 +223,6 @@
             background: linear-gradient(135deg, #7c3aed, #2563eb);
         }
 
-        /* Parrot */
         .msg-parrot-row {
             display: flex;
             align-items: flex-start;
@@ -260,7 +249,6 @@
             font-weight: 600;
         }
 
-        /* Code blocks inside responses */
         .code-block {
             background: #1e1e2e !important;
             border: 1px solid #2a2a3e !important;
@@ -284,7 +272,6 @@
             margin-top: 2px;
         }
 
-        /* Interrupt banner */
         .msg-interrupt {
             background: rgba(220,74,48,0.06);
             border: 1px solid rgba(220,74,48,0.2);
@@ -295,7 +282,6 @@
             text-align: center;
         }
 
-        /* Suggestions */
         .suggestions {
             margin-top: 12px;
             padding-top: 10px;
@@ -329,7 +315,6 @@
             border-color: rgba(37,99,235,0.3);
         }
 
-        /* Typing indicator */
         .typing-bubble {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
@@ -541,6 +526,9 @@
 
     </div>
 
+    <!-- Generators loaded before app.js -->
+    <script src="./js/textgen.js"></script>
+    <script src="./js/codegen.js"></script>
     <script src="./js/app.js"></script>
 </body>
 </html>
