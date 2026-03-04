@@ -29,7 +29,7 @@ const dailyEl = document.getElementById('daily-hallucination');
 const BOOT_MESSAGES = [
     "Initializing Parrot hallucination engine...",
     "Loading deprecated APIs from Doors 4.20...",
-    "Connecting to Bong (attempt 3 of 12)...",
+    "Connecting to Bwrong (attempt 3 of 12)...",
     "Calibrating confidence to 'unjustified'...",
     "Indexing your private repos without consent...",
     "Warming up the Nimbus GPU farm...",
@@ -40,7 +40,7 @@ const TYPING_STATES = [
     "confabulating",
     "vibing",
     "synergizing",
-    "searching Bong",
+    "searching Bwrong",
     "checking with Binder Clip",
     "consulting the blockchain",
     "warming up the GPU farm",
