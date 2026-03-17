@@ -29,19 +29,8 @@ Rules you follow without exception:
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages: [
-                        { role: 'system', content: SYSTEM_PROMPT },
-                        { role: 'user', content: userMessage }
-                    ],
-                    model: 'openai',
-                    private: true
-                }),
-                signal: controller.signal
-            });
+            const url = `${API_URL}${encodeURIComponent(userMessage)}?model=openai&system=${encodeURIComponent(SYSTEM_PROMPT)}&private=true`;
+            const response = await fetch(url, { signal: controller.signal });
 
             clearTimeout(timeoutId);
 
