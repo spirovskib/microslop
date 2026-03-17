@@ -146,47 +146,10 @@ function generateResponse(input) {
         }
     }
 
-    // ── Dynamic code (replaces static code.json) ──
-    // 40% chance for short responses, 50% for long-form
-    const codeChance = isLong ? 0.5 : 0.4;
-    if (Math.random() < codeChance && window.CodeGen) {
-        const { code } = window.CodeGen.generate(subject);
-        const label = pick([
-            "Here's the recommended solution:",
-            "Parrot suggests the following implementation:",
-            "The enterprise-grade approach would be:",
-            "Based on my training data, try this:",
-            "The officially unsupported workaround:",
-            "Here's what I generated with 97.3% confidence:",
-            "The Parrot-approved pattern for this:",
-        ]);
-        parts.push(label);
-        parts.push('<pre class="code-block"><code>' + escapeHtml(code) + '</code></pre>');
-    }
-
-    // 30% chance: fake source
-    if (Math.random() < 0.30 && slopData.sources.length) {
-        parts.push('<em class="source-cite">' + pick(slopData.sources) + '</em>');
-    }
-
-    // 15% chance: system interrupt
-    const interrupt = (Math.random() < 0.15 && slopData.interrupts.length)
-        ? pick(slopData.interrupts) : null;
-
-    // 35% chance: suggested follow-ups
-    let suggestions = null;
-    if (Math.random() < 0.35 && slopData.suggestions.length) {
-        const pool = [...slopData.suggestions];
-        suggestions = [];
-        for (let i = 0; i < 3 && pool.length; i++) {
-            const idx = Math.floor(Math.random() * pool.length);
-            suggestions.push(pool.splice(idx, 1)[0]);
-        }
-    }
-
     previousSubject = subject;
 
-    return { html: parts.join('<br><br>'), interrupt, suggestions };
+    const codeChance = isLong ? 0.5 : 0.4;
+    return buildExtras(parts, subject, codeChance);
 }
 
 // ============================================================
@@ -304,10 +267,52 @@ function delay(ms) {
 }
 
 // ============================================================
+// EXTRAS: code block, source, interrupt, suggestions
+// Applied to both local and Pollinations responses
+// ============================================================
+
+const CODE_LABELS = [
+    "Here's the recommended solution:",
+    "Parrot suggests the following implementation:",
+    "The enterprise-grade approach would be:",
+    "Based on my training data, try this:",
+    "The officially unsupported workaround:",
+    "Here's what I generated with 97.3% confidence:",
+    "The Parrot-approved pattern for this:",
+];
+
+function buildExtras(parts, subject, codeChance) {
+    if (Math.random() < codeChance && window.CodeGen) {
+        const { code } = window.CodeGen.generate(subject);
+        parts.push(pick(CODE_LABELS));
+        parts.push('<pre class="code-block"><code>' + escapeHtml(code) + '</code></pre>');
+    }
+
+    if (Math.random() < 0.30 && slopData.sources.length) {
+        parts.push('<em class="source-cite">' + pick(slopData.sources) + '</em>');
+    }
+
+    const interrupt = (Math.random() < 0.15 && slopData.interrupts.length)
+        ? pick(slopData.interrupts) : null;
+
+    let suggestions = null;
+    if (Math.random() < 0.35 && slopData.suggestions.length) {
+        const pool = [...slopData.suggestions];
+        suggestions = [];
+        for (let i = 0; i < 3 && pool.length; i++) {
+            const idx = Math.floor(Math.random() * pool.length);
+            suggestions.push(pool.splice(idx, 1)[0]);
+        }
+    }
+
+    return { html: parts.join('<br><br>'), interrupt, suggestions };
+}
+
+// ============================================================
 // EVENT HANDLING
 // ============================================================
 
-function handleSubmit(overrideText) {
+async function handleSubmit(overrideText) {
     const text = overrideText || userInput.value.trim();
     if (!text) return;
 
@@ -316,20 +321,39 @@ function handleSubmit(overrideText) {
     disableInput();
     showTyping();
 
-    // Longer think time for long-form responses
-    const thinkTime = 800 + Math.random() * 2000;
-    setTimeout(() => {
-        hideTyping();
+    const minThinkTime = 800 + Math.random() * 2000;
+    const subject = extractSubject(text);
 
-        const response = generateResponse(text);
+    let html, interrupt, suggestions;
 
-        if (response.interrupt) {
-            appendInterrupt(response.interrupt);
+    // Try Pollinations and enforce a minimum think time in parallel
+    const [pollinationsResult] = await Promise.allSettled([
+        window.PollinationsGen ? PollinationsGen.generate(text) : Promise.reject('no pollinations'),
+        delay(minThinkTime)
+    ]);
+
+    if (pollinationsResult.status === 'fulfilled') {
+        const rawText = pollinationsResult.value;
+        // Split on paragraph breaks, fall back to sentence chunks if no blank lines
+        const paragraphs = rawText.split(/\n\n+/).filter(p => p.trim());
+        const parts = paragraphs.map(p => escapeHtml(p.trim()));
+        ({ html, interrupt, suggestions } = buildExtras(parts, subject, 0.45));
+        previousSubject = subject;
+    } else {
+        if (pollinationsResult.reason !== 'no pollinations') {
+            console.warn('Pollinations failed, using local generation:', pollinationsResult.reason);
         }
+        const response = generateResponse(text);
+        html = response.html;
+        interrupt = response.interrupt;
+        suggestions = response.suggestions;
+    }
 
-        appendParrot(response.html, response.suggestions);
-        enableInput();
-    }, thinkTime);
+    hideTyping();
+
+    if (interrupt) appendInterrupt(interrupt);
+    appendParrot(html, suggestions);
+    enableInput();
 }
 
 chatForm.addEventListener('submit', (e) => {
