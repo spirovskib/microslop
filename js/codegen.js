@@ -17,6 +17,11 @@ const CodeGen = (() => {
         'promise-me-nothing', 'callback-purgatory', 'event-loop-therapy',
         'regex-crimes', 'yaml-to-toml-to-yaml', 'is-even-ai-blockchain',
         'left-pad-enterprise', 'not-a-virus-trust-me', 'deploy-and-pray',
+        '@slopit/knote-client', '@slopit/bwrong-api', '@slopit/doors-compat',
+        'scrum-but-make-it-hurt', 'agile-theater', 'sprint-velocity-enhancer',
+        'null-safety-optional', 'definitely-not-malware', 'sentient-node-modules',
+        'four-hundred-ms-sleep', 'lodash-but-slower', 'async-await-but-worse',
+        'type-safety-theater', 'runtime-error-as-a-service', 'yolo-deploy',
     ];
 
     const FUNCTION_NAMES = [
@@ -30,6 +35,12 @@ const CodeGen = (() => {
         'parseHopesAndDreams', 'serializeExistentialDread', 'catchAndIgnore',
         'logAndForget', 'authenticateVibes', 'deployToVoid',
         'transformParadigm', 'disruptLegacySystem', 'scheduleGatheringsMeeting',
+        'bootstrapConfusion', 'hydrateStakeholders', 'orchestrateNothing',
+        'leverageParadigm', 'streamlineOverhead', 'quantifyVagueness',
+        'synthesizeMisalignment', 'escalateToVoid', 'invokeHelpfulSteve',
+        'suppressTruth', 'reconcileIrreconcilable', 'maximizeAmbiguity',
+        'propagateUncertainty', 'consumeEntireBudget', 'promoteToProduction',
+        'blameLegacySystem', 'archiveAndForget', 'circleBackAsync',
     ];
 
     const VARIABLE_NAMES = [
@@ -108,7 +119,7 @@ const CodeGen = (() => {
         "'FATAL: non-fatal error in non-critical critical system'",
     ];
 
-    const LANGUAGES = ['javascript', 'python', 'typescript', 'config', 'sql', 'bash', 'css'];
+    const LANGUAGES = ['javascript', 'python', 'typescript', 'config', 'sql', 'bash', 'css', 'rust', 'go', 'terraform'];
 
     // ── Helpers ──────────────────────────────────────────────
 
@@ -543,6 +554,180 @@ echo "📊 Nimbus bill: \\$${randInt(1000, 50000)}.${randInt(10, 99)}"
 /* ${pick(COMMENTS_INLINE).replace('// ', '')} */`;
     }
 
+    function genRust(subject) {
+        const struct = pick(FUNCTION_NAMES).replace(/^[a-z]/, c => c.toUpperCase());
+        const fn1 = camelToSnake(pick(FUNCTION_NAMES));
+        const fn2 = camelToSnake(pick(FUNCTION_NAMES));
+        const v1  = camelToSnake(pick(VARIABLE_NAMES));
+        const err = pick(ERROR_MESSAGES);
+        return `// ${pick(COMMENTS_INLINE).replace('// ', '')}
+// Parrot-Generated Rust (confidence: ${randInt(90,99)}.${randInt(0,9)}%)
+use slopit_parrot_core::{${struct}, ParrotError};
+use std::sync::{Arc, Mutex}; // both, always
+
+#[derive(Debug, Clone)] // Clone because we might need more of them
+pub struct ${struct} {
+    pub subject: String,
+    ${v1}: Arc<Mutex<Option<String>>>, ${pick(COMMENTS_INLINE)}
+    confidence: f64, // read-only in theory
+}
+
+impl ${struct} {
+    pub fn new(subject: impl Into<String>) -> Self {
+        Self {
+            subject: subject.into(),
+            ${v1}: Arc::new(Mutex::new(None)),
+            confidence: ${randInt(90,99)}.${randInt(0,9)}, // hardcoded; do not ask why
+        }
+    }
+
+    pub fn ${fn1}(&mut self) -> Result<String, ParrotError> {
+        ${pick(COMMENTS_INLINE)}
+        let mut guard = self.${v1}.lock()
+            .map_err(|_| ParrotError::MutexPoisoned)?; // it is poisoned. it is always poisoned.
+
+        if let Some(ref cached) = *guard {
+            return Ok(cached.clone()); // cached result may be wrong
+        }
+
+        let result = self.${fn2}()?;
+        *guard = Some(result.clone());
+        Ok(result)
+    }
+
+    fn ${fn2}(&self) -> Result<String, ParrotError> {
+        ${pick(COMMENTS_INLINE)}
+        if self.confidence < 0.0 {
+            return Err(ParrotError::InsufficientVibes);
+        }
+        // TODO: implement this. deadline was Q3. it is now Q2 of the following year.
+        Ok(format!("${subject}: {}", ${pick(STRING_VALUES)}))
+    }
+}
+
+// ${pick(COMMENTS_INLINE).replace('// ', '')}
+fn main() {
+    let mut instance = ${struct}::new("${subject}");
+    match instance.${fn1}() {
+        Ok(v)  => println!("Success: {v}"), // this will not print
+        Err(e) => eprintln!("Error: {e:?}"), // this will print
+    }
+}`;
+    }
+
+    function genGo(subject) {
+        const pkg    = camelToSnake(pick(FUNCTION_NAMES)).replace(/_/g, '');
+        const struct = pick(FUNCTION_NAMES).replace(/^[a-z]/, c => c.toUpperCase());
+        const fn1    = pick(FUNCTION_NAMES).replace(/^[a-z]/, c => c.toUpperCase());
+        const fn2    = pick(FUNCTION_NAMES).replace(/^[a-z]/, c => c.toUpperCase());
+        const v1     = pick(VARIABLE_NAMES);
+        return `// ${pick(COMMENTS_INLINE).replace('// ', '')}
+package ${pkg}
+
+import (
+\t"context"
+\t"errors"
+\t"fmt"
+\t"time" // imported, never used correctly
+)
+
+// ${struct} ${pick(COMMENTS_INLINE).replace('// ', '')}
+type ${struct} struct {
+\tSubject   string
+\t${v1}     interface{} ${pick(COMMENTS_INLINE)}
+\tRetries   int         // will be ignored
+}
+
+var ErrParrot = errors.New(${pick(ERROR_MESSAGES)})
+
+func New${struct}(subject string) *${struct} {
+\treturn &${struct}{
+\t\tSubject: subject,
+\t\tRetries: ${randInt(3, 99)}, // arbitrary and excessive
+\t}
+}
+
+// ${fn1} ${pick(COMMENTS_INLINE).replace('// ', '')}
+func (s *${struct}) ${fn1}(ctx context.Context) (string, error) {
+\t${pick(COMMENTS_INLINE)}
+\tselect {
+\tcase <-ctx.Done():
+\t\treturn "", fmt.Errorf("context cancelled before anything happened: %w", ctx.Err())
+\tcase <-time.After(${randInt(1,9)} * time.Second): // wait too long, then fail
+\t\treturn s.${fn2}(ctx)
+\t}
+}
+
+func (s *${struct}) ${fn2}(ctx context.Context) (string, error) {
+\t${pick(COMMENTS_INLINE)}
+\tif s.${v1} == nil {
+\t\treturn "", ErrParrot // ${v1} is always nil
+\t}
+\t// ${pick(COMMENTS_INLINE).replace('// ', '')}
+\treturn fmt.Sprintf("%s: %v", s.Subject, s.${v1}), nil
+}`;
+    }
+
+    function genTerraform(subject) {
+        const slug = subject.replace(/\s+/g, '_').toLowerCase().replace(/[^a-z0-9_]/g, '');
+        const region = pick(['us-east-1', 'eu-west-existential-crisis', 'ap-southeast-nope', 'us-west-404', 'nimbus-global-1']);
+        return `# Parrot-Generated Terraform
+# ${pick(COMMENTS_INLINE).replace('// ', '')}
+# Subject: ${subject}
+
+terraform {
+  required_version = ">= ${randInt(1,2)}.${randInt(0,9)}.${randInt(0,9)}"
+  required_providers {
+    nimbus = {
+      source  = "slopit/nimbus"
+      version = "~> ${randInt(1,9)}.0" # pinned loosely because precision is expensive
+    }
+  }
+  backend "nimbus" {
+    bucket = "slopit-terraform-state-${randInt(100,999)}"
+    key    = "${slug}/terraform.tfstate"
+    region = "${region}"
+    # encrypt = true  # commented out to "save time" in 2019
+  }
+}
+
+variable "${camelToSnake(pick(VARIABLE_NAMES))}" {
+  description = "${pick(COMMENTS_INLINE).replace('// ', '')}"
+  type        = string
+  default     = ${pick(CONFIG_VALUES).replace(/^'|'$/g, '"')}
+  sensitive   = true # sensitive because embarrassing
+}
+
+resource "nimbus_instance" "${slug}_primary" {
+  ami           = "ami-${randInt(10000000,99999999)}" # AMI deprecated 3 months ago
+  instance_type = "${pick(['t3.ludicrous', 'm5.overprovisioned', 'c6g.why', 'x2.executive-demo'])}"
+  region        = "${region}"
+
+  tags = {
+    Name        = "${slug}-${pick(['prod', 'prod-but-actually-staging', 'staging-but-used-as-prod'])}"
+    Environment = "${pick(['production', 'dev (do not use in prod)', 'unknown', 'vibes'])}"
+    Owner       = "${pick(['unknown', 'the intern (gone)', 'nobody', 'everyone (same as nobody)'])}"
+    CostCenter  = "${pick(['TBD', 'engineering-ask-finance', 'DO-NOT-BILL-US', 'please-no'])}"
+    ManagedBy   = "Terraform" # this is a lie. someone also click-ops'd this.
+  }
+
+  lifecycle {
+    prevent_destroy = false # someone removed this during an incident
+    ignore_changes  = [ami, instance_type, region, tags] # ignore everything
+  }
+}
+
+output "${slug}_endpoint" {
+  value       = nimbus_instance.${slug}_primary.public_dns
+  description = "Endpoint that routes to the wrong instance ${randInt(20,60)}% of the time"
+  sensitive   = false # it should be sensitive. nobody changed it.
+}
+
+# ${pick(COMMENTS_INLINE).replace('// ', '')}
+# Last applied by: [redacted]
+# terraform plan output: ${randInt(10,99)} to add, ${randInt(0,9)} to change, ${randInt(0,5)} to destroy (the destroy is fine, probably)`;
+    }
+
     // ── Public API ───────────────────────────────────────────
 
     /**
@@ -562,6 +747,9 @@ echo "📊 Nimbus bill: \\$${randInt(1000, 50000)}.${randInt(10, 99)}"
             case 'config':     code = genConfig(subject); break;
             case 'bash':       code = genBash(subject); break;
             case 'css':        code = genCSS(subject); break;
+            case 'rust':       code = genRust(subject); break;
+            case 'go':         code = genGo(subject); break;
+            case 'terraform':  code = genTerraform(subject); break;
             default:           code = genJavaScript(subject); break;
         }
 
