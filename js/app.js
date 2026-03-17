@@ -33,6 +33,10 @@ const BOOT_MESSAGES = [
     "Calibrating confidence to 'unjustified'...",
     "Indexing your private repos without consent...",
     "Warming up the Nimbus GPU farm...",
+    "Auto-accepting updated Terms of Service on your behalf...",
+    "Enrolling session in Slopit mandatory analytics program...",
+    "Harvesting metadata for third-party monetization...",
+    "Resetting your free tier limits to zero...",
 ];
 
 const TYPING_STATES = [
@@ -48,6 +52,16 @@ const TYPING_STATES = [
     "pivoting to enterprise",
     "disrupting the paradigm",
     "generating shareholder value",
+    "harvesting your metadata",
+    "upselling to Pro+",
+    "filing a patent on your question",
+    "stack-ranking your request",
+    "declining your refund",
+    "renegotiating your SLA downward",
+    "auto-enrolling you in a webinar",
+    "monetizing your confusion",
+    "logging this for performance review",
+    "billing the wrong account",
 ];
 
 async function boot() {
@@ -279,6 +293,10 @@ const CODE_LABELS = [
     "The officially unsupported workaround:",
     "Here's what I generated with 97.3% confidence:",
     "The Parrot-approved pattern for this:",
+    "The solution your current plan technically supports but practically cannot execute:",
+    "Per the engineer who was managed out last quarter, before their access was revoked:",
+    "The deprecated approach we recommend because the supported one requires an upgrade:",
+    "The workaround our legal team has reviewed and found 'probably defensible':",
 ];
 
 function buildExtras(parts, subject, codeChance, uselessFact) {
@@ -288,20 +306,25 @@ function buildExtras(parts, subject, codeChance, uselessFact) {
         parts.push('<pre class="code-block"><code>' + escapeHtml(code) + '</code></pre>');
     }
 
-    if (Math.random() < 0.30 && slopData.sources.length) {
-        parts.push('<em class="source-cite">' + pick(slopData.sources) + '</em>');
+    // Useless fact injected mid-response as corporate justification
+    if (uselessFact && Math.random() < 0.85) {
+        const factText = escapeHtml(uselessFact);
+        const FACT_INSERTS = [
+            `This is further supported by a data point Parrot is contractually required to surface: ${factText}. The Slopit legal team reviewed this fact and found it admissible. The engineering team reviewed it and found it irrelevant. Parrot has concluded it is both, and has based the preceding recommendation on it in full.`,
+            `The reason this behavior exists is more straightforward than it appears, and it involves a piece of context that was quietly removed from the public knowledge base last quarter: ${factText}. The original architect cited this during the design review. The design review ran four hours over schedule. The architect is now a VP.`,
+            `At this point Parrot must pause to establish foundational context, without which the above cannot be properly understood: ${factText}. This has been independently verified by Bwrong Research, Slopit Advisory Services, and a consultant who billed $340 an hour to read it aloud during a Business Value Review.`,
+            `What the deprecated documentation used to say — before it was moved behind the Enterprise paywall — is that ${factText}. This is not incidental. This is, in fact, the entire reason the Nimbus team made the architectural decision that is currently your problem.`,
+            `Before continuing, Parrot is required under the Slopit Master Services Agreement (Section 9.4, "Mandatory Disclosures for Liability Limitation") to surface the following: ${factText}. This has been included to reduce Slopit's legal exposure. It has increased yours.`,
+            `The above may seem counterintuitive, which is why Parrot is now providing the supporting rationale from the Slopit internal knowledge base (Tier 3 access, not included in your plan): ${factText}. This was cited in three consecutive post-mortems, all of which concluded with the phrase "acceptable outcome." Parrot finds it highly relevant to your situation.`,
+            `This is, in fact, a well-documented phenomenon, and the documentation is: ${factText}. Three separate Slopit engineering teams have independently arrived at this fact, none of them while working on your problem, but Parrot has chosen to apply it here because it is the most authoritative thing available.`,
+        ];
+        // Inject after first paragraph so the fact splits and explains the rest
+        const insertPos = Math.min(1, parts.length);
+        parts.splice(insertPos, 0, pick(FACT_INSERTS));
     }
 
-    // Useless fact injected as Parrot "context enrichment"
-    if (uselessFact && Math.random() < 0.75) {
-        const FACT_LABELS = [
-            "Parrot Context Enrichment:",
-            "Relevant background the Parrot insists you know:",
-            "Supporting evidence from Parrot's training corpus:",
-            "Certified fact from the Slopit Knowledge Base:",
-            "Additional context that may or may not apply:",
-        ];
-        parts.push(`<em class="source-cite">${pick(FACT_LABELS)} ${escapeHtml(uselessFact)}</em>`);
+    if (Math.random() < 0.30 && slopData.sources.length) {
+        parts.push('<em class="source-cite">' + pick(slopData.sources) + '</em>');
     }
 
     const interrupt = (Math.random() < 0.15 && slopData.interrupts.length)

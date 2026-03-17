@@ -84,5 +84,9 @@
   "If you search our Confluence for this, it redirects to {prev}. If you search for {prev}, it redirects to a 404. The 404 page also has a bug.",
   "The last all-hands included a moment of silence for {prev}. This was not on the agenda; it just happened naturally.",
   "Our load balancer routes 50% of traffic from this to {prev} and the other 50% directly into the void.",
-  "We call the interaction between this and {prev} 'the dance of death,' and it has its own on-call rotation."
+  "We call the interaction between this and {prev} 'the dance of death,' and it has its own on-call rotation.",
+  "The feature that used to solve this was {prev}, which was free until it wasn't, and is now available on the Enterprise plan, which starts at a price we do not list publicly.",
+  "According to our telemetry, 73% of users who struggled with {prev} upgraded within 30 days of encountering this. We consider that a conversion funnel, not a warning sign.",
+  "The team responsible for {prev} was reorganized into the team responsible for this. Both things are now worse, and nobody is responsible for either of them.",
+  "Our standard guidance is to leverage {prev}, which would work if your account had not been quietly migrated to the tier that does not include {prev}. That migration was in the Q3 changelog."
 ]
