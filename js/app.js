@@ -122,7 +122,7 @@ function extractSubject(input) {
     return subject || "that concept";
 }
 
-function generateResponse(input) {
+function generateResponse(input, uselessFact) {
     const subject = extractSubject(input);
 
     // Decide response type: short (classic) vs long-form
@@ -149,7 +149,7 @@ function generateResponse(input) {
     previousSubject = subject;
 
     const codeChance = isLong ? 0.5 : 0.4;
-    return buildExtras(parts, subject, codeChance);
+    return buildExtras(parts, subject, codeChance, uselessFact);
 }
 
 // ============================================================
@@ -281,7 +281,7 @@ const CODE_LABELS = [
     "The Parrot-approved pattern for this:",
 ];
 
-function buildExtras(parts, subject, codeChance) {
+function buildExtras(parts, subject, codeChance, uselessFact) {
     if (Math.random() < codeChance && window.CodeGen) {
         const { code } = window.CodeGen.generate(subject);
         parts.push(pick(CODE_LABELS));
@@ -290,6 +290,18 @@ function buildExtras(parts, subject, codeChance) {
 
     if (Math.random() < 0.30 && slopData.sources.length) {
         parts.push('<em class="source-cite">' + pick(slopData.sources) + '</em>');
+    }
+
+    // Useless fact injected as Parrot "context enrichment"
+    if (uselessFact && Math.random() < 0.75) {
+        const FACT_LABELS = [
+            "Parrot Context Enrichment:",
+            "Relevant background the Parrot insists you know:",
+            "Supporting evidence from Parrot's training corpus:",
+            "Certified fact from the Slopit Knowledge Base:",
+            "Additional context that may or may not apply:",
+        ];
+        parts.push(`<em class="source-cite">${pick(FACT_LABELS)} ${escapeHtml(uselessFact)}</em>`);
     }
 
     const interrupt = (Math.random() < 0.15 && slopData.interrupts.length)
@@ -306,6 +318,29 @@ function buildExtras(parts, subject, codeChance) {
     }
 
     return { html: parts.join('<br><br>'), interrupt, suggestions };
+}
+
+async function fetchUselessFact() {
+    const response = await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random?language=en');
+    if (!response.ok) throw new Error(`Facts API ${response.status}`);
+    const data = await response.json();
+    return data.text;
+}
+
+async function tryLLM(text) {
+    // Primary: Puter.js (GPT-4o-mini, higher quality)
+    if (window.puter && window.PuterGen) {
+        try {
+            return await PuterGen.generate(text);
+        } catch (err) {
+            console.warn('Puter failed, trying Pollinations:', err.message);
+        }
+    }
+    // Fallback: Pollinations.ai
+    if (window.PollinationsGen) {
+        return await PollinationsGen.generate(text);
+    }
+    throw new Error('No LLM available');
 }
 
 // ============================================================
@@ -326,24 +361,24 @@ async function handleSubmit(overrideText) {
 
     let html, interrupt, suggestions;
 
-    // Try Pollinations and enforce a minimum think time in parallel
-    const [pollinationsResult] = await Promise.allSettled([
-        window.PollinationsGen ? PollinationsGen.generate(text) : Promise.reject('no pollinations'),
-        delay(minThinkTime)
+    // Fire LLM, useless fact fetch, and minimum think time all in parallel
+    const [llmResult, , factResult] = await Promise.allSettled([
+        tryLLM(text),
+        delay(minThinkTime),
+        fetchUselessFact()
     ]);
 
-    if (pollinationsResult.status === 'fulfilled') {
-        const rawText = pollinationsResult.value;
-        // Split on paragraph breaks, fall back to sentence chunks if no blank lines
+    const uselessFact = factResult.status === 'fulfilled' ? factResult.value : null;
+
+    if (llmResult.status === 'fulfilled') {
+        const rawText = llmResult.value;
         const paragraphs = rawText.split(/\n\n+/).filter(p => p.trim());
         const parts = paragraphs.map(p => escapeHtml(p.trim()));
-        ({ html, interrupt, suggestions } = buildExtras(parts, subject, 0.45));
+        ({ html, interrupt, suggestions } = buildExtras(parts, subject, 0.45, uselessFact));
         previousSubject = subject;
     } else {
-        if (pollinationsResult.reason !== 'no pollinations') {
-            console.warn('Pollinations failed, using local generation:', pollinationsResult.reason);
-        }
-        const response = generateResponse(text);
+        console.warn('LLM failed, using local generation:', llmResult.reason);
+        const response = generateResponse(text, uselessFact);
         html = response.html;
         interrupt = response.interrupt;
         suggestions = response.suggestions;
