@@ -5,6 +5,7 @@
 
 // State
 let previousSubject = "the mainframe";
+let puterAvailable = true; // flipped to false if auth modal detected or auth error thrown
 let slopData = {
     assertions: [],
     bridges: [],
@@ -327,13 +328,49 @@ async function fetchUselessFact() {
     return data.text;
 }
 
+// Watch for Puter auth modals injected into the DOM and kill them immediately.
+// Puter adds an iframe or overlay when it needs the user to sign in.
+function watchForPuterAuth() {
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType !== Node.ELEMENT_NODE) continue;
+                const id  = (node.id  || '').toLowerCase();
+                const cls = (node.className && typeof node.className === 'string'
+                    ? node.className : '').toLowerCase();
+                const src = (node.src || node.getAttribute?.('src') || '').toLowerCase();
+                const isPuterElement =
+                    id.includes('puter') || cls.includes('puter') ||
+                    (node.tagName === 'IFRAME' && src.includes('puter'));
+                if (isPuterElement) {
+                    node.remove();
+                    if (puterAvailable) {
+                        puterAvailable = false;
+                        console.warn('Puter auth modal suppressed — switching to Pollinations for this session.');
+                    }
+                }
+            }
+        }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+}
+watchForPuterAuth();
+
 async function tryLLM(text) {
     // Primary: Puter.js (GPT-4o-mini, higher quality)
-    if (window.puter && window.PuterGen) {
+    if (puterAvailable && window.puter && window.PuterGen) {
         try {
             return await PuterGen.generate(text);
         } catch (err) {
             console.warn('Puter failed, trying Pollinations:', err.message);
+            // Auth-related errors: disable Puter for the rest of the session
+            const msg = (err.message || '').toLowerCase();
+            if (msg.includes('auth') || msg.includes('sign') ||
+                msg.includes('login') || msg.includes('unauthorized') ||
+                msg.includes('403') || msg.includes('401')) {
+                puterAvailable = false;
+                console.warn('Puter auth error detected — switching to Pollinations for this session.');
+            }
         }
     }
     // Fallback: Pollinations.ai
