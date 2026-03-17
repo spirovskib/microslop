@@ -42,7 +42,12 @@ const PollinationsGen = (() => {
 
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-            const text = await response.text();
+            let text = await response.text();
+            // Strip Pollinations promotional footer appended to free-tier responses
+            const adMarker = text.indexOf('\n---\n');
+            if (adMarker !== -1 && text.toLowerCase().includes('pollinations', adMarker)) {
+                text = text.substring(0, adMarker);
+            }
             return text.trim();
         } catch (err) {
             clearTimeout(timeoutId);
